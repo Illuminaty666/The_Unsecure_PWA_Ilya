@@ -17,15 +17,15 @@ on:
     inputs:
       force_run:
         description: "🎯 Force run even if disabled (for first-time setup)"
-        required: false
-        default: false
+        required: true
+        default: true
         type: boolean
 
 env:
   # 🎓 STUDENT/TEACHER FRIENDLY: Auto-enables on first manual run
   # You don't need to change this! Just run the workflow manually once to activate it.
   # The workflow will automatically enable itself after the first successful run.
-  SECURITY_ANALYSIS_ENABLED: false
+  SECURITY_ANALYSIS_ENABLED: true
 
 jobs:
   setup-and-validate:
