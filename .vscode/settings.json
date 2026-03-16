@@ -31,5 +31,8 @@
       "visibility": "public"
     }
   },
-  "liveServer.settings.root": ".student_resources"
+  "liveServer.settings.root": ".student_resources",
+  "github-actions.workflows.pinned.workflows": [
+    ".github/workflows/security-analysis.yml"
+  ]
 }
