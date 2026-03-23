@@ -1,14 +1,19 @@
 import sqlite3 as sql
 import time
 import random
+import bcrypt
 
 
 def insertUser(username, password, DoB):
+    hashed = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
     con = sql.connect("database_files/database.db")
     cur = con.cursor()
     cur.execute(
-        "INSERT INTO users (username,password,dateOfBirth) VALUES (?,?,?)",
-        (username, password, DoB),
+        "INSERT INTO users (username,password) VALUES (?,?)",
+        (
+            username,
+            password,
+        ),
     )
     con.commit()
     con.close()
