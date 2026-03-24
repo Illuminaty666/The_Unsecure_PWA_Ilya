@@ -36,7 +36,10 @@ def signup():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-        dbHandler.insertUser(username, password)
+        if 8 < len(password) < 20:
+            dbHandler.insertUser(username, password)
+        else:
+            return render_template("/signup.html")
         return render_template("/index.html")
     else:
         return render_template("/signup.html")

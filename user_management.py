@@ -1,7 +1,6 @@
 import sqlite3 as sql
 import bcrypt
-import time
-import random
+import html
 
 
 def insertUser(
@@ -54,6 +53,6 @@ def listFeedback():
     f = open("templates/partials/success_feedback.html", "w")
     for row in data:
         f.write("<p>\n")
-        f.write(f"{row[1]}\n")
+        f.write(html.escape(str(row[1])))  # Escape to prevent XSS
         f.write("</p>\n")
     f.close()
