@@ -1,10 +1,13 @@
 import sqlite3 as sql
+import bcrypt
 import time
 import random
-import bcrypt
 
 
-def insertUser(username, password, DoB):
+def insertUser(
+    username,
+    password,
+):
     hashed = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
     con = sql.connect("database_files/database.db")
     cur = con.cursor()
@@ -12,7 +15,7 @@ def insertUser(username, password, DoB):
         "INSERT INTO users (username,password) VALUES (?,?)",
         (
             username,
-            password,
+            hashed,
         ),
     )
     con.commit()
@@ -22,26 +25,17 @@ def insertUser(username, password, DoB):
 def retrieveUsers(username, password):
     con = sql.connect("database_files/database.db")
     cur = con.cursor()
-    cur.execute("SELECT * FROM users WHERE username = ?", (username,))
-    if cur.fetchone() == None:
+    cur.execute("SELECT password FROM users WHERE username = ?", (username,))
+    row = cur.fetchone()
+    if row is None:
         con.close()
         return False
-    else:
-        cur.execute("SELECT * FROM users WHERE password = ?", (password,))
-        # Plain text log of visitor count as requested by Unsecure PWA management
-        with open("visitor_log.txt", "r") as file:
-            number = int(file.read().strip())
-            number += 1
-        with open("visitor_log.txt", "w") as file:
-            file.write(str(number))
-        # Simulate response time of heavy app for testing purposes
-        time.sleep(random.randint(80, 90) / 1000)
-        if cur.fetchone() == None:
-            con.close()
-            return False
-        else:
-            con.close()
-            return True
+    hashed = row[0]
+    if bcrypt.checkpw(password.encode("utf-8"), hashed):
+        con.close()
+        return True
+    con.close()
+    return False
 
 
 def insertFeedback(feedback):

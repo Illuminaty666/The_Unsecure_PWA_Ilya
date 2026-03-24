@@ -36,8 +36,7 @@ def signup():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-        DoB = request.form["dob"]
-        dbHandler.insertUser(username, password, DoB)
+        dbHandler.insertUser(username, password)
         return render_template("/index.html")
     else:
         return render_template("/signup.html")
